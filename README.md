@@ -9,8 +9,7 @@ anomaly score and an AI/BI dashboard.
 
 ## Architecture
 
-```
-```
+![Architecture](docs/architecture.png)
 
 Catalog `finance`: schema `raw` (volume), pipeline output in schema `lakeflow`.
 
