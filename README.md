@@ -9,22 +9,20 @@ anomaly score and an AI/BI dashboard.
 
 ## Architecture
 
-```
-CSVs in a UC Volume
-  /Volumes/finance/raw/volume/<table>/
-        |  Auto Loader (cloudFiles, all columns as strings)
-        v
-bronze_*   (11 streaming tables + _ingested_at, _source_file)
-        |  type, parse mixed dates, repair typos, dedupe, expectations
-        v
-silver_*   (lookups, addresses, branches, customers, accounts, loans, transactions)
-        |                          \
-        |                           -> silver_transactions_quarantine (rows that broke a hard rule, with reasons)
-        v
-gold_*     (dim_customer/account/branch/transaction_type/date, fct_transactions, fct_loans,
-            fct_transaction_risk, agg_daily_activity, agg_branch_risk, agg_loan_portfolio)
-        v
-AI/BI dashboard "Finance Risk Overview"
+```mermaid
+flowchart TD
+    A["CSVs in a UC Volume<br/>/Volumes/finance/raw/volume/&lt;table&gt;/"]
+    B["bronze_*<br/>11 streaming tables, raw strings<br/>+ _ingested_at, _source_file"]
+    C["silver_*<br/>typed, mixed dates parsed, typos repaired,<br/>deduped, expectations"]
+    Q["silver_transactions_quarantine<br/>rows that broke a hard rule, with reasons"]
+    D["gold_*<br/>star schema, risk score, aggregates"]
+    E["AI/BI dashboard<br/>Finance Risk Overview"]
+
+    A -->|Auto Loader| B
+    B -->|clean + validate| C
+    C -->|hard-rule failures| Q
+    C --> D
+    D --> E
 ```
 
 Catalog `finance`: schema `raw` (volume), pipeline output in schema `lakeflow`.
