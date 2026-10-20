@@ -71,6 +71,4 @@ about 49.7k transactions worth 124.45M, 91 high-risk and 1.91k medium-or-high af
 - Serverless runs with ANSI mode on, so the code uses `try_cast` and `try_to_timestamp`.
 - Pipelines cannot take over tables created by notebooks, hence the separate `lakeflow` schema.
 
-## Next steps
-Schedule the pipeline as a daily job, add SCD2 on accounts with `create_auto_cdc_flow`, connect Power BI
-to the gold tables through the Databricks connector.
+
